@@ -1,0 +1,36 @@
+[
+  {
+    "id": "7ef57e45-2274-4122-a03c-a4c6cae8e47c",
+    "productName": "Premium Bull Semen - Holstein",
+    "category": "Cattle",
+    "quantity": 50,
+    "price": 2500,
+    "unit": "straw",
+    "description": "High quality Holstein bull semen",
+    "batchNumber": "BS-2024-001",
+    "expiryDate": "2025-12-31"
+  },
+  {
+    "id": "23395c98-e412-4414-9db0-1e5f77dc5f33",
+    "productName": "Premium Bull Semen - Jersey",
+    "category": "Cattle",
+    "quantity": 28,
+    "price": 2200,
+    "unit": "straw",
+    "description": "High quality Jersey bull semen",
+    "batchNumber": "BS-2024-002",
+    "expiryDate": "2025-11-30",
+    "updatedAt": "2025-11-04T20:52:07.546Z"
+  },
+  {
+    "id": "bda0e575-3a24-4a2f-b1fe-6f422644bad5",
+    "productName": "Buffalo Semen - Murrah",
+    "category": "Buffalo",
+    "quantity": 40,
+    "price": 1800,
+    "unit": "straw",
+    "description": "Premium Murrah buffalo semen",
+    "batchNumber": "BS-2024-003",
+    "expiryDate": "2025-10-31"
+  }
+]

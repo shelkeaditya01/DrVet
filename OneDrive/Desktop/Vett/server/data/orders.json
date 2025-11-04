@@ -1,0 +1,18 @@
+[
+  {
+    "id": "9f216c7c-f099-494a-97c7-9384c12d59d8",
+    "orderNumber": "ORD-1762288666897",
+    "customerId": "b809debe-e1e5-4357-8758-300d3bc5b2fd",
+    "items": [
+      {
+        "stockId": "23395c98-e412-4414-9db0-1e5f77dc5f33",
+        "quantity": 2
+      }
+    ],
+    "totalAmount": 4400,
+    "status": "completed",
+    "customerName": "Aditya",
+    "createdAt": "2025-11-04T20:37:46.897Z",
+    "updatedAt": "2025-11-04T20:40:09.299Z"
+  }
+]
