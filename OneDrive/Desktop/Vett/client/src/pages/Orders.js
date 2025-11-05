@@ -134,18 +134,18 @@ const Orders = () => {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6 md:mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Orders</h1>
-          <p className="text-gray-600">Manage customer orders</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-1 md:mb-2">Orders</h1>
+          <p className="text-gray-600 text-sm md:text-base">Manage customer orders</p>
         </div>
         <button
           onClick={() => {
             resetForm();
             setShowModal(true);
           }}
-          className="btn btn-primary flex items-center gap-2"
+          className="btn btn-primary flex items-center justify-center gap-2 w-full md:w-auto"
         >
           <Plus size={20} />
           New Order
@@ -153,8 +153,8 @@ const Orders = () => {
       </div>
 
       {/* Filters */}
-      <div className="mb-6 flex gap-4">
-        <div className="relative flex-1">
+      <div className="mb-6 flex flex-col md:flex-row gap-3 md:gap-4">
+        <div className="relative md:flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           <input
             type="text"
@@ -167,7 +167,7 @@ const Orders = () => {
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="input w-48"
+          className="input w-full md:w-48"
         >
           <option value="all">All Status</option>
           <option value="pending">Pending</option>
@@ -180,24 +180,24 @@ const Orders = () => {
       <div className="card">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-gray-50 sticky top-0 z-10">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Order #</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Customer</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Amount</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Actions</th>
+                <th className="px-3 py-2 md:px-6 md:py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase">Order #</th>
+                <th className="px-3 py-2 md:px-6 md:py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase">Customer</th>
+                <th className="px-3 py-2 md:px-6 md:py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase">Amount</th>
+                <th className="px-3 py-2 md:px-6 md:py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase">Status</th>
+                <th className="px-3 py-2 md:px-6 md:py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase">Date</th>
+                <th className="px-3 py-2 md:px-6 md:py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {filteredOrders.length > 0 ? (
                 filteredOrders.map((order) => (
                   <tr key={order.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm font-medium text-gray-800">{order.orderNumber}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600">{order.customerName || 'N/A'}</td>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-800">₹{order.totalAmount?.toLocaleString() || 0}</td>
-                    <td className="px-6 py-4">
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm font-medium text-gray-800">{order.orderNumber}</td>
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600">{order.customerName || 'N/A'}</td>
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm font-medium text-gray-800">₹{order.totalAmount?.toLocaleString() || 0}</td>
+                    <td className="px-3 py-3 md:px-6 md:py-4">
                       <select
                         value={order.status}
                         onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
@@ -214,10 +214,10 @@ const Orders = () => {
                         <option value="cancelled">Cancelled</option>
                       </select>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600">
                       {new Date(order.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-3 py-3 md:px-6 md:py-4">
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => {

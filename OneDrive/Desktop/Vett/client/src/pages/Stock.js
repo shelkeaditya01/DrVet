@@ -110,18 +110,18 @@ const Stock = () => {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6 md:mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Stock Inventory</h1>
-          <p className="text-gray-600">Manage your product inventory</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-1 md:mb-2">Stock Inventory</h1>
+          <p className="text-gray-600 text-sm md:text-base">Manage your product inventory</p>
         </div>
         <button
           onClick={() => {
             resetForm();
             setShowModal(true);
           }}
-          className="btn btn-primary flex items-center gap-2"
+          className="btn btn-primary flex items-center justify-center gap-2 w-full md:w-auto"
         >
           <Plus size={20} />
           Add Stock Item
@@ -129,8 +129,8 @@ const Stock = () => {
       </div>
 
       {/* Filters */}
-      <div className="mb-6 flex gap-4">
-        <div className="relative flex-1">
+      <div className="mb-6 flex flex-col md:flex-row gap-3 md:gap-4">
+        <div className="relative md:flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           <input
             type="text"
@@ -143,7 +143,7 @@ const Stock = () => {
         <select
           value={filterCategory}
           onChange={(e) => setFilterCategory(e.target.value)}
-          className="input w-48"
+          className="input w-full md:w-48"
         >
           <option value="all">All Categories</option>
           {categories.map(cat => (
@@ -153,7 +153,7 @@ const Stock = () => {
       </div>
 
       {/* Stock Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {filteredStock.length > 0 ? (
           filteredStock.map((item) => {
             const isLowStock = item.quantity < 10;
@@ -369,3 +369,4 @@ const Stock = () => {
 };
 
 export default Stock;
+

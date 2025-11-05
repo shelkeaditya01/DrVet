@@ -104,18 +104,18 @@ const Customers = () => {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6 md:mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Customers</h1>
-          <p className="text-gray-600">Manage your customer database</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-1 md:mb-2">Customers</h1>
+          <p className="text-gray-600 text-sm md:text-base">Manage your customer database</p>
         </div>
         <button
           onClick={() => {
             resetForm();
             setShowModal(true);
           }}
-          className="btn btn-primary flex items-center gap-2"
+          className="btn btn-primary flex items-center justify-center gap-2 w-full md:w-auto"
         >
           <UserPlus size={20} />
           Add Customer
@@ -140,26 +140,26 @@ const Customers = () => {
       <div className="card">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-gray-50 sticky top-0 z-10">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Phone</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">City</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">State</th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Actions</th>
+                <th className="px-3 py-2 md:px-6 md:py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase">Name</th>
+                <th className="px-3 py-2 md:px-6 md:py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase">Email</th>
+                <th className="px-3 py-2 md:px-6 md:py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase">Phone</th>
+                <th className="px-3 py-2 md:px-6 md:py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase">City</th>
+                <th className="px-3 py-2 md:px-6 md:py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase">State</th>
+                <th className="px-3 py-2 md:px-6 md:py-3 text-left text-[10px] md:text-xs font-semibold text-gray-600 uppercase">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {filteredCustomers.length > 0 ? (
                 filteredCustomers.map((customer) => (
                   <tr key={customer.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 text-sm font-medium text-gray-800">{customer.name}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600">{customer.email}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600">{customer.phone}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600">{customer.city}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600">{customer.state}</td>
-                    <td className="px-6 py-4 text-sm">
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm font-medium text-gray-800">{customer.name}</td>
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600">{customer.email}</td>
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600">{customer.phone}</td>
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600">{customer.city}</td>
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm text-gray-600">{customer.state}</td>
+                    <td className="px-3 py-3 md:px-6 md:py-4 text-sm">
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleEdit(customer)}

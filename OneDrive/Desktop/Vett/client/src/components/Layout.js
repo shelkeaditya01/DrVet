@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Home, Users, ShoppingCart, Package, Menu, X } from 'lucide-react';
 
 const Layout = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
   const navItems = [
@@ -14,50 +14,69 @@ const Layout = ({ children }) => {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar */}
-      <aside className={`fixed left-0 top-0 h-screen bg-gradient-to-b from-slate-800 to-slate-700 text-white transition-all duration-300 z-50 shadow-2xl ${sidebarOpen ? 'w-72' : 'w-20'}`}>
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
-          <div className="flex items-center gap-3 flex-1 min-w-0">
-            <div className="text-3xl">🐄</div>
-            {sidebarOpen && (
-              <div className="flex-1 min-w-0">
-                <h1 className="text-2xl font-bold text-white">DRVET</h1>
-                <p className="text-xs text-white/80 italic mt-1">पशुसेवा हीच ईश्वरसेवा</p>
+    <div className="min-h-screen bg-gray-50">
+      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="h-16 md:h-20 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="text-2xl md:text-3xl">🐄</div>
+              <div>
+                <h1 className="text-lg md:text-xl font-bold text-slate-800 leading-tight">DRVET</h1>
+                <p className="hidden sm:block text-[11px] text-slate-500 -mt-0.5">पशुसेवा हीच ईश्वरसेवा</p>
               </div>
-            )}
+            </div>
+            <nav className="hidden md:flex items-center gap-1">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = location.pathname === item.path;
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`px-3 py-2 rounded-lg flex items-center gap-2 text-sm font-medium transition-colors ${
+                      isActive ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    }`}
+                  >
+                    <Icon size={16} />
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg border border-gray-200 text-gray-700 active:scale-[0.98]"
+              aria-label="Toggle navigation"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
-          >
-            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
         </div>
-        <nav className="p-4">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = location.pathname === item.path;
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`flex items-center gap-4 p-3 rounded-lg mb-2 transition-all duration-200 ${
-                  isActive
-                    ? 'bg-white/20 text-white font-semibold border-l-4 border-secondary'
-                    : 'text-white/80 hover:bg-white/10 hover:text-white'
-                }`}
-              >
-                <Icon size={20} />
-                {sidebarOpen && <span>{item.label}</span>}
-              </Link>
-            );
-          })}
-        </nav>
-      </aside>
-
-      {/* Main Content */}
-      <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'ml-72' : 'ml-20'}`}>
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-gray-200 bg-white">
+            <nav className="max-w-7xl mx-auto px-4 py-2 grid grid-cols-1">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = location.pathname === item.path;
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                      isActive ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    }`}
+                  >
+                    <Icon size={18} />
+                    <span className="text-sm font-medium">{item.label}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+        )}
+      </header>
+      <main className="max-w-7xl mx-auto pt-4 md:pt-6">
         {children}
       </main>
     </div>
@@ -65,3 +84,4 @@ const Layout = ({ children }) => {
 };
 
 export default Layout;
+

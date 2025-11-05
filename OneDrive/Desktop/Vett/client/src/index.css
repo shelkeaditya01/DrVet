@@ -6,24 +6,31 @@
   body {
     @apply font-sans antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    background: radial-gradient(1200px 600px at 10% -10%, rgba(74,144,226,0.08), transparent 60%),
+      radial-gradient(800px 400px at 110% 10%, rgba(80,200,120,0.08), transparent 60%),
+      linear-gradient(180deg, #fafbfc 0%, #f6f8fa 100%);
+    min-height: 100vh;
   }
 }
 
 @layer components {
   .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-sm hover:shadow-md active:scale-[0.98];
   }
   
   .btn-primary {
     @apply bg-primary text-white hover:bg-primary-dark focus:ring-primary;
+    background-image: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0));
   }
   
   .btn-secondary {
     @apply bg-secondary text-white hover:bg-green-600 focus:ring-secondary;
+    background-image: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0));
   }
   
   .btn-danger {
     @apply bg-red-500 text-white hover:bg-red-600 focus:ring-red-500;
+    background-image: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0));
   }
   
   .btn-outline {
@@ -35,6 +42,8 @@
   }
   
   .card {
-    @apply bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl;
+    @apply bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl border border-gray-100;
+    background-image: linear-gradient(135deg, rgba(53,122,189,0.08), rgba(80,200,120,0.06));
   }
 }
+
