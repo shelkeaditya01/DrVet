@@ -9,6 +9,7 @@ const Stock = () => {
   const [editingItem, setEditingItem] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
+  const [isMobile, setIsMobile] = useState(null);
   const [formData, setFormData] = useState({
     productName: '',
     category: '',
@@ -21,12 +22,29 @@ const Stock = () => {
   });
 
   useEffect(() => {
-    fetchStock();
+    const mq = window.matchMedia('(max-width: 767px)');
+    const handler = (e) => setIsMobile(e.matches);
+    setIsMobile(mq.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
   }, []);
 
-  const fetchStock = async () => {
+  useEffect(() => {
+    if (isMobile === null) return;
+    fetchStock(isMobile);
+  }, [isMobile]);
+
+  const fetchStock = async (demoMode) => {
+    if (demoMode) {
+      setStock([
+        { id: 's1', productName: 'Holstein Premium', category: 'Cattle', quantity: 25, price: 800, unit: 'straw', batchNumber: 'B-1001', expiryDate: '2026-01-15', description: 'High quality Holstein bull semen' },
+        { id: 's2', productName: 'Murrah Buffalo', category: 'Buffalo', quantity: 8, price: 950, unit: 'straw', batchNumber: 'B-1002', expiryDate: '2025-09-10', description: 'Premium Murrah buffalo semen' }
+      ]);
+      setLoading(false);
+      return;
+    }
     try {
-      const response = await axios.get('/api/stock');
+      const response = await axios.get('http://localhost:5000/api/stock');
       setStock(response.data);
       setLoading(false);
     } catch (error) {
@@ -37,13 +55,18 @@ const Stock = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isMobile) {
+      alert('Demo mode (mobile): stock changes are not saved.');
+      setShowModal(false);
+      return;
+    }
     try {
       if (editingItem) {
-        await axios.put(`/api/stock/${editingItem.id}`, formData);
+        await axios.put(`http://localhost:5000/api/stock/${editingItem.id}`, formData);
       } else {
-        await axios.post('/api/stock', formData);
+        await axios.post('http://localhost:5000/api/stock', formData);
       }
-      fetchStock();
+      fetchStock(false);
       resetForm();
       setShowModal(false);
     } catch (error) {
@@ -69,9 +92,13 @@ const Stock = () => {
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this stock item?')) {
+      if (isMobile) {
+        alert('Demo mode (mobile): delete not saved.');
+        return;
+      }
       try {
-        await axios.delete(`/api/stock/${id}`);
-        fetchStock();
+        await axios.delete(`http://localhost:5000/api/stock/${id}`);
+        fetchStock(false);
       } catch (error) {
         console.error('Error deleting stock item:', error);
         alert('Error deleting stock item');

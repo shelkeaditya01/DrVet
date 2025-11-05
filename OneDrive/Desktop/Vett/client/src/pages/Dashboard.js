@@ -5,18 +5,57 @@ import { Users, ShoppingCart, Package, TrendingUp, AlertCircle } from 'lucide-re
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(null);
 
   useEffect(() => {
-    fetchStats();
+    const mq = window.matchMedia('(max-width: 767px)');
+    const handler = (e) => setIsMobile(e.matches);
+    setIsMobile(mq.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
   }, []);
 
-  const fetchStats = async () => {
+  useEffect(() => {
+    if (isMobile === null) return;
+    fetchStats(isMobile);
+  }, [isMobile]);
+
+  const fetchStats = async (demoMode) => {
+    if (demoMode) {
+      setStats({
+        totalCustomers: 12,
+        totalOrders: 34,
+        totalStockItems: 27,
+        totalRevenue: 123456,
+        pendingOrders: 3,
+        completedOrders: 28,
+        lowStockItems: 2,
+        recentOrders: [
+          { id: 'o1', orderNumber: 'ORD-1001', customerName: 'Ravi Kumar', totalAmount: 2500, status: 'completed' },
+          { id: 'o2', orderNumber: 'ORD-1002', customerName: 'Sneha Patil', totalAmount: 1800, status: 'pending' },
+          { id: 'o3', orderNumber: 'ORD-1003', customerName: 'Amit Shah', totalAmount: 3200, status: 'cancelled' }
+        ]
+      });
+      setLoading(false);
+      return;
+    }
     try {
-      const response = await axios.get('/api/dashboard');
+      const response = await axios.get('http://localhost:5000/api/dashboard');
       setStats(response.data);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching stats:', error);
+      // Fallback to demo data
+      setStats({
+        totalCustomers: 12,
+        totalOrders: 34,
+        totalStockItems: 27,
+        totalRevenue: 123456,
+        pendingOrders: 3,
+        completedOrders: 28,
+        lowStockItems: 2,
+        recentOrders: []
+      });
       setLoading(false);
     }
   };

@@ -11,6 +11,7 @@ const Orders = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [isMobile, setIsMobile] = useState(null);
   const [formData, setFormData] = useState({
     customerId: '',
     items: [{ stockId: '', quantity: 1 }],
@@ -19,15 +20,42 @@ const Orders = () => {
   });
 
   useEffect(() => {
-    fetchData();
+    const mq = window.matchMedia('(max-width: 767px)');
+    const handler = (e) => setIsMobile(e.matches);
+    setIsMobile(mq.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
   }, []);
 
-  const fetchData = async () => {
+  useEffect(() => {
+    if (isMobile === null) return;
+    fetchData(isMobile);
+  }, [isMobile]);
+
+  const fetchData = async (demoMode) => {
+    if (demoMode) {
+      const demoCustomers = [
+        { id: 'c1', name: 'Ravi Kumar' },
+        { id: 'c2', name: 'Sneha Patil' }
+      ];
+      const demoStock = [
+        { id: 's1', productName: 'Holstein Premium', price: 800, quantity: 25 },
+        { id: 's2', productName: 'Jersey Premium', price: 650, quantity: 40 }
+      ];
+      setCustomers(demoCustomers);
+      setStock(demoStock);
+      setOrders([
+        { id: 'o1', orderNumber: 'ORD-1001', customerName: 'Ravi Kumar', totalAmount: 1600, status: 'completed', createdAt: new Date().toISOString(), items: [{ stockId: 's1', quantity: 2 }] },
+        { id: 'o2', orderNumber: 'ORD-1002', customerName: 'Sneha Patil', totalAmount: 650, status: 'pending', createdAt: new Date().toISOString(), items: [{ stockId: 's2', quantity: 1 }] }
+      ]);
+      setLoading(false);
+      return;
+    }
     try {
       const [ordersRes, customersRes, stockRes] = await Promise.all([
-        axios.get('/api/orders'),
-        axios.get('/api/customers'),
-        axios.get('/api/stock')
+        axios.get('http://localhost:5000/api/orders'),
+        axios.get('http://localhost:5000/api/customers'),
+        axios.get('http://localhost:5000/api/stock')
       ]);
       setOrders(ordersRes.data);
       setCustomers(customersRes.data);
@@ -52,6 +80,11 @@ const Orders = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isMobile) {
+      alert('Demo mode (mobile): order not saved.');
+      setShowModal(false);
+      return;
+    }
     try {
       const totalAmount = calculateTotal(formData.items);
       const orderData = {
@@ -59,8 +92,8 @@ const Orders = () => {
         totalAmount,
         customerName: customers.find(c => c.id === formData.customerId)?.name || ''
       };
-      await axios.post('/api/orders', orderData);
-      fetchData();
+      await axios.post('http://localhost:5000/api/orders', orderData);
+      fetchData(false);
       resetForm();
       setShowModal(false);
     } catch (error) {
@@ -70,9 +103,13 @@ const Orders = () => {
   };
 
   const handleStatusUpdate = async (orderId, newStatus) => {
+    if (isMobile) {
+      alert('Demo mode (mobile): status change not saved.');
+      return;
+    }
     try {
-      await axios.put(`/api/orders/${orderId}`, { status: newStatus });
-      fetchData();
+      await axios.put(`http://localhost:5000/api/orders/${orderId}`, { status: newStatus });
+      fetchData(false);
     } catch (error) {
       console.error('Error updating order:', error);
       alert('Error updating order status');
@@ -81,9 +118,13 @@ const Orders = () => {
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this order?')) {
+      if (isMobile) {
+        alert('Demo mode (mobile): delete not saved.');
+        return;
+      }
       try {
-        await axios.delete(`/api/orders/${id}`);
-        fetchData();
+        await axios.delete(`http://localhost:5000/api/orders/${id}`);
+        fetchData(false);
       } catch (error) {
         console.error('Error deleting order:', error);
         alert('Error deleting order');

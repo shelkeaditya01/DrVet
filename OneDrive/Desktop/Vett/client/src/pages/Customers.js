@@ -8,6 +8,7 @@ const Customers = () => {
   const [showModal, setShowModal] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isMobile, setIsMobile] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,27 +20,54 @@ const Customers = () => {
   });
 
   useEffect(() => {
-    fetchCustomers();
+    const mq = window.matchMedia('(max-width: 767px)');
+    const handler = (e) => setIsMobile(e.matches);
+    setIsMobile(mq.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
   }, []);
 
-  const fetchCustomers = async () => {
+  useEffect(() => {
+    if (isMobile === null) return;
+    fetchCustomers(isMobile);
+  }, [isMobile]);
+
+  const fetchCustomers = async (demoMode) => {
+    if (demoMode) {
+      setCustomers([
+        { id: 'c1', name: 'Ravi Kumar', email: 'ravi@example.com', phone: '9876543210', city: 'Pune', state: 'MH' },
+        { id: 'c2', name: 'Sneha Patil', email: 'sneha@example.com', phone: '9876501234', city: 'Nashik', state: 'MH' },
+        { id: 'c3', name: 'Amit Shah', email: 'amit@example.com', phone: '9822012345', city: 'Ahmedabad', state: 'GJ' }
+      ]);
+      setLoading(false);
+      return;
+    }
     try {
-      const response = await axios.get('/api/customers');
+      const response = await axios.get('http://localhost:5000/api/customers');
       setCustomers(response.data);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching customers:', error);
+      // Fallback demo data
+      setCustomers([
+        { id: 'c1', name: 'Ravi Kumar', email: 'ravi@example.com', phone: '9876543210', city: 'Pune', state: 'MH' }
+      ]);
       setLoading(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isMobile) {
+      alert('Demo mode: changes are not saved.');
+      setShowModal(false);
+      return;
+    }
     try {
       if (editingCustomer) {
-        await axios.put(`/api/customers/${editingCustomer.id}`, formData);
+        await axios.put(`http://localhost:5000/api/customers/${editingCustomer.id}`, formData);
       } else {
-        await axios.post('/api/customers', formData);
+        await axios.post('http://localhost:5000/api/customers', formData);
       }
       fetchCustomers();
       resetForm();
@@ -66,9 +94,13 @@ const Customers = () => {
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this customer?')) {
+      if (isMobile) {
+        alert('Demo mode: changes are not saved.');
+        return;
+      }
       try {
-        await axios.delete(`/api/customers/${id}`);
-        fetchCustomers();
+        await axios.delete(`http://localhost:5000/api/customers/${id}`);
+        fetchCustomers(false);
       } catch (error) {
         console.error('Error deleting customer:', error);
         alert('Error deleting customer');

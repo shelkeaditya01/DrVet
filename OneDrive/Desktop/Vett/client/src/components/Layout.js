@@ -76,7 +76,7 @@ const Layout = ({ children }) => {
           </div>
         )}
       </header>
-      <main className="max-w-7xl mx-auto pt-16 md:pt-20 px-4 md:px-6">
+      <main className="max-w-7xl mx-auto pt-4 md:pt-6">
         {children}
       </main>
     </div>
