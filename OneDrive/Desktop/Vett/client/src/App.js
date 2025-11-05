@@ -15,6 +15,7 @@ function App() {
           <Route path="/customers" element={<Customers />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/stock" element={<Stock />} />
+          <Route path="*" element={<Dashboard />} />
         </Routes>
       </Layout>
     </Router>
