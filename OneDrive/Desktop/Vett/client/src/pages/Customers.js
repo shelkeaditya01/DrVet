@@ -24,7 +24,7 @@ const Customers = () => {
 
   const fetchCustomers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/customers');
+      const response = await axios.get('/api/customers');
       setCustomers(response.data);
       setLoading(false);
     } catch (error) {
@@ -37,9 +37,9 @@ const Customers = () => {
     e.preventDefault();
     try {
       if (editingCustomer) {
-        await axios.put(`http://localhost:5000/api/customers/${editingCustomer.id}`, formData);
+        await axios.put(`/api/customers/${editingCustomer.id}`, formData);
       } else {
-        await axios.post('http://localhost:5000/api/customers', formData);
+        await axios.post('/api/customers', formData);
       }
       fetchCustomers();
       resetForm();
@@ -67,7 +67,7 @@ const Customers = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this customer?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/customers/${id}`);
+        await axios.delete(`/api/customers/${id}`);
         fetchCustomers();
       } catch (error) {
         console.error('Error deleting customer:', error);

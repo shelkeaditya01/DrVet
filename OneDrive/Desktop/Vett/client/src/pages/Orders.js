@@ -25,9 +25,9 @@ const Orders = () => {
   const fetchData = async () => {
     try {
       const [ordersRes, customersRes, stockRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/orders'),
-        axios.get('http://localhost:5000/api/customers'),
-        axios.get('http://localhost:5000/api/stock')
+        axios.get('/api/orders'),
+        axios.get('/api/customers'),
+        axios.get('/api/stock')
       ]);
       setOrders(ordersRes.data);
       setCustomers(customersRes.data);
@@ -59,7 +59,7 @@ const Orders = () => {
         totalAmount,
         customerName: customers.find(c => c.id === formData.customerId)?.name || ''
       };
-      await axios.post('http://localhost:5000/api/orders', orderData);
+      await axios.post('/api/orders', orderData);
       fetchData();
       resetForm();
       setShowModal(false);
@@ -71,7 +71,7 @@ const Orders = () => {
 
   const handleStatusUpdate = async (orderId, newStatus) => {
     try {
-      await axios.put(`http://localhost:5000/api/orders/${orderId}`, { status: newStatus });
+      await axios.put(`/api/orders/${orderId}`, { status: newStatus });
       fetchData();
     } catch (error) {
       console.error('Error updating order:', error);
@@ -82,7 +82,7 @@ const Orders = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this order?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/orders/${id}`);
+        await axios.delete(`/api/orders/${id}`);
         fetchData();
       } catch (error) {
         console.error('Error deleting order:', error);

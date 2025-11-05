@@ -26,7 +26,7 @@ const Stock = () => {
 
   const fetchStock = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/stock');
+      const response = await axios.get('/api/stock');
       setStock(response.data);
       setLoading(false);
     } catch (error) {
@@ -39,9 +39,9 @@ const Stock = () => {
     e.preventDefault();
     try {
       if (editingItem) {
-        await axios.put(`http://localhost:5000/api/stock/${editingItem.id}`, formData);
+        await axios.put(`/api/stock/${editingItem.id}`, formData);
       } else {
-        await axios.post('http://localhost:5000/api/stock', formData);
+        await axios.post('/api/stock', formData);
       }
       fetchStock();
       resetForm();
@@ -70,7 +70,7 @@ const Stock = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this stock item?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/stock/${id}`);
+        await axios.delete(`/api/stock/${id}`);
         fetchStock();
       } catch (error) {
         console.error('Error deleting stock item:', error);
